@@ -1,0 +1,11 @@
+---
+title: "class"
+author: "Taylor Greenberg Goldy and James Hutt"
+date: "3/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
