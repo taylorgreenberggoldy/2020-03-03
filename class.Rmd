@@ -8,4 +8,51 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(gt)
 ```
+
+```{r}
+url_current <- "https://registrar.fas.harvard.edu/files/fas-registrar/files/class_enrollment_summary_by_term_2.25.20_0.xlsx"
+
+url_old <- "https://registrar.fas.harvard.edu/files/fas-registrar/files/class_enrollment_summary_by_term_3.22.19_0.xlsx"
+
+download.file(url= url_current, destfile = "current.xlsx")
+
+download.file(url= url_old, destfile = "old.xlsx")
+
+```
+
+```{r}
+
+enroll_current <- read_excel("current.xlsx", skip = 3) %>%
+  clean_names() %>%
+  filter(!is.na(course_name)) %>%
+  select(course_id, course_name, u_grad)
+
+enroll_current
+
+
+enroll_old <- read_excel("old.xlsx", skip = 3) %>%
+  clean_names() %>%
+  filter(!is.na(course_name)) %>%
+  select(course_id)
+
+enroll_old
+
+
+
+```
+
+
+```{r}
+
+new_class <- enroll_current %>%
+  anti_join(enroll_old, by = "course_id") %>%
+  arrange(-u_grad) %>%
+  slice(1:5)
+
+```
+
